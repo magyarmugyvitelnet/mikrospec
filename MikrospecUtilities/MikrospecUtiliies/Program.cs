@@ -14,10 +14,10 @@ namespace MikrospecUtiliies
         {
             //creating TNS entries
             string oradb = "Data Source=(DESCRIPTION =" + "(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 2524))" + "(CONNECT_DATA =" + "(SERVER = DEDICATED)" + "(SERVICE_NAME = szoldbt2.fcsm.hu)));" + "User Id=kassza_teszt;Password=kassza_teszt;";
-             {
+            {
                 OracleConnection conn = new OracleConnection(oradb);
                 conn.Open();
-                Console.Write("Connected to Oracle " + conn.ServerVersion);
+                Console.Write("Connected to Oracle " + conn.ServerVersion + "\n");
 
 
                 OracleCommand cmd = new OracleCommand();
