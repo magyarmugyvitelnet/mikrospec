@@ -17,7 +17,7 @@ namespace MikrospecUtiliies
              {
                 OracleConnection conn = new OracleConnection(oradb);
                 conn.Open();
-                Console.Write("Connected to Oracle" + conn.ServerVersion);
+                Console.Write("Connected to Oracle " + conn.ServerVersion);
 
 
                 OracleCommand cmd = new OracleCommand();
