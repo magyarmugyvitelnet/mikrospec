@@ -50,10 +50,18 @@ namespace MSHelpdesk
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.logBox = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.taskpage602 = new System.Windows.Forms.TabPage();
+            this.lblLog = new System.Windows.Forms.Label();
+            this.btnToCsv = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.btn602Kihagyott = new System.Windows.Forms.Button();
+            this.btn602Dupla = new System.Windows.Forms.Button();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.tabControl1.SuspendLayout();
             this.taskpage606.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.taskpage602.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnEles
@@ -87,7 +95,7 @@ namespace MSHelpdesk
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.taskpage606);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.taskpage602);
             this.tabControl1.Location = new System.Drawing.Point(16, 79);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -253,15 +261,84 @@ namespace MSHelpdesk
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.BindingContextChanged += new System.EventHandler(this.dataGridView1_BindingContextChanged);
             // 
-            // tabPage2
+            // taskpage602
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(785, 742);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.taskpage602.Controls.Add(this.lblLog);
+            this.taskpage602.Controls.Add(this.btnToCsv);
+            this.taskpage602.Controls.Add(this.dataGridView2);
+            this.taskpage602.Controls.Add(this.btn602Kihagyott);
+            this.taskpage602.Controls.Add(this.btn602Dupla);
+            this.taskpage602.Controls.Add(this.dateTimePicker1);
+            this.taskpage602.Location = new System.Drawing.Point(4, 22);
+            this.taskpage602.Name = "taskpage602";
+            this.taskpage602.Padding = new System.Windows.Forms.Padding(3);
+            this.taskpage602.Size = new System.Drawing.Size(785, 742);
+            this.taskpage602.TabIndex = 1;
+            this.taskpage602.Text = "602 -es IF Kódlabor különbözeti kontroll lista";
+            this.taskpage602.UseVisualStyleBackColor = true;
+            // 
+            // lblLog
+            // 
+            this.lblLog.AutoSize = true;
+            this.lblLog.Location = new System.Drawing.Point(6, 411);
+            this.lblLog.Name = "lblLog";
+            this.lblLog.Size = new System.Drawing.Size(111, 13);
+            this.lblLog.TabIndex = 5;
+            this.lblLog.Text = "Futtasd a lekérdezést!";
+            this.lblLog.Visible = false;
+            // 
+            // btnToCsv
+            // 
+            this.btnToCsv.Location = new System.Drawing.Point(6, 374);
+            this.btnToCsv.Name = "btnToCsv";
+            this.btnToCsv.Size = new System.Drawing.Size(384, 23);
+            this.btnToCsv.TabIndex = 4;
+            this.btnToCsv.Text = "Futtasd a lekérdezést!";
+            this.btnToCsv.UseVisualStyleBackColor = true;
+            this.btnToCsv.Visible = false;
+            this.btnToCsv.Click += new System.EventHandler(this.btnToCsv_Click);
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(6, 43);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(773, 325);
+            this.dataGridView2.TabIndex = 3;
+            // 
+            // btn602Kihagyott
+            // 
+            this.btn602Kihagyott.Location = new System.Drawing.Point(623, 14);
+            this.btn602Kihagyott.Name = "btn602Kihagyott";
+            this.btn602Kihagyott.Size = new System.Drawing.Size(156, 23);
+            this.btn602Kihagyott.TabIndex = 2;
+            this.btn602Kihagyott.Text = "602 kihagyott tételek";
+            this.btn602Kihagyott.UseVisualStyleBackColor = true;
+            this.btn602Kihagyott.Click += new System.EventHandler(this.btn602Kihagyott_Click);
+            // 
+            // btn602Dupla
+            // 
+            this.btn602Dupla.Location = new System.Drawing.Point(461, 14);
+            this.btn602Dupla.Name = "btn602Dupla";
+            this.btn602Dupla.Size = new System.Drawing.Size(156, 23);
+            this.btn602Dupla.TabIndex = 1;
+            this.btn602Dupla.Text = "602 dupla tételek";
+            this.btn602Dupla.UseVisualStyleBackColor = true;
+            this.btn602Dupla.Click += new System.EventHandler(this.btn602Dupla_Click);
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "yyyy - MM (MMMM)";
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(6, 17);
+            this.dateTimePicker1.MinDate = new System.DateTime(2022, 1, 1, 0, 0, 0, 0);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(148, 20);
+            this.dateTimePicker1.TabIndex = 0;
+            this.dateTimePicker1.Value = new System.DateTime(2023, 12, 25, 23, 59, 59, 0);
             // 
             // Form1
             // 
@@ -278,6 +355,9 @@ namespace MSHelpdesk
             this.taskpage606.ResumeLayout(false);
             this.taskpage606.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.taskpage602.ResumeLayout(false);
+            this.taskpage602.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -292,7 +372,7 @@ namespace MSHelpdesk
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox logBox;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage taskpage602;
         private System.Windows.Forms.TextBox edtFH;
         private System.Windows.Forms.TextBox edtPEP;
         private System.Windows.Forms.Label label4;
@@ -306,6 +386,12 @@ namespace MSHelpdesk
         private System.Windows.Forms.TextBox edtSORSZAMTOL;
         private System.Windows.Forms.TextBox edtAZONKH;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Button btn602Kihagyott;
+        private System.Windows.Forms.Button btn602Dupla;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button btnToCsv;
+        private System.Windows.Forms.Label lblLog;
     }
 }
 

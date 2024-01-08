@@ -7,8 +7,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace MSHelpdesk
 {
@@ -20,28 +22,29 @@ namespace MSHelpdesk
         public FcsmServer FcsmServer
         {
             get { return _fcsmserver; }
-            set { 
+            set
+            {
                 _fcsmserver = value;
                 lblSrv.Text = value.ToString();
                 Connect();
             }
         }
 
-
-
         public string pFH { get; set; }
         public string pAZONKH { get; set; }
-
         public int pSORSZAMTOL { get; set; }
         public int pSORSZAMIG { get; set; }
         public int pTETELSZAM { get; set; }
-
         public string pEP { get; set; }
+
+        public int pEV { get; set; }
+        public int pHONAP { get; set; }
+        public DataTable dataTable { get; set; }
 
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
         void Connect()
@@ -82,7 +85,8 @@ namespace MSHelpdesk
 
         public static void WriteToCSV(DataTable dtDataTable, string strFilePath)
         {
-            StreamWriter sw = new StreamWriter(strFilePath, false);
+            StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.GetEncoding(1250));
+
             //headers    
             for (int i = 0; i < dtDataTable.Columns.Count; i++)
             {
@@ -121,6 +125,75 @@ namespace MSHelpdesk
         }
 
 
+        void Task602Dupla(DateTime dateTime)
+        {
+            //            MessageBox.Show("Task602Dupla lekérdezés");
+            Connect();
+            /*pEV = 2023;
+             * pHONAP = 2;*/
+            string ScriptToSave = "";
+            string ActualScript = "";
+            pEV = dateTime.Year;
+            pHONAP = dateTime.Month;
+
+            //            ActualScript = @"with gysz_count as (select count(1),gysz,ev,honap from mm_kl_adatok where ev = "+pEV+" and honap = "+pHONAP+" group by gysz,ev,honap having count(1) != 1) select mm_kl_adatok.* from mm_kl_adatok join gysz_count on mm_kl_adatok.gysz=gysz_count.gysz and mm_kl_adatok.ev=gysz_count.ev order by mm_kl_adatok.gysz";
+            ActualScript = @"with gysz_count as (select count(1),gysz,ev,honap from mm_kl_adatok where ev = " + pEV.ToString() + " and honap = " + pHONAP.ToString() + " group by gysz,ev,honap having count(1) != 1) select mm_kl_adatok.* from mm_kl_adatok, gysz_count where mm_kl_adatok.gysz=gysz_count.gysz and mm_kl_adatok.ev=gysz_count.ev and mm_kl_adatok.honap=gysz_count.honap order by gysz_count.gysz,gysz_count.ev,gysz_count.honap";
+            ScriptToSave += ActualScript + "\n\n";
+            dataTable = runQuery(ActualScript);
+
+            //            int darab = 0;
+
+            int darab = dataTable.Rows.Count;
+
+            /*            foreach (DataRow item in dataTable.Rows)
+                        {
+                            darab++;
+                        }*/
+
+            MessageBox.Show($"Legyűjtött rekordok száma: {darab.ToString()} darab", "Eredmény", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (darab != 0)
+            {
+                btnToCsv.Text = $"{btn602Dupla.Text} ({darab.ToString()}) darab rekord CSV fájlba írása";
+                btnToCsv.Visible = true;
+                dataGridView2.DataSource = dataTable;
+            };
+        }
+
+        void Task602Kihagyott(DateTime dateTime)
+        {
+            //MessageBox.Show("Task602Kihagyott lekérdezés");
+            Connect();
+            /*pEV = 2023;
+             * pHONAP = 2;*/
+            string ScriptToSave = "";
+            string ActualScript = "";
+            pEV = dateTime.Year;
+            pHONAP = dateTime.Month;
+
+            ActualScript = @"select mm_kl_adatok.* from mm_kl_adatok where mm_kl_adatok.ev = " + pEV.ToString() + " and mm_kl_adatok.honap = " + pHONAP.ToString() + " and not exists (select 1 from V_KL_TO_603 where V_KL_TO_603.TIP = '602' and V_KL_TO_603.ev = " + pEV.ToString() + " and V_KL_TO_603.honap = " + pHONAP.ToString() + " and V_KL_TO_603.gysz = mm_kl_adatok.gysz) and (mm_kl_adatok.matol - mm_kl_adatok.matol2)!=0 order by mm_kl_adatok.gysz, mm_kl_adatok.ev, mm_kl_adatok.honap";
+            ScriptToSave += ActualScript + "\n\n";
+            dataTable = runQuery(ActualScript);
+
+            //            int darab = 0;
+
+            int darab = dataTable.Rows.Count;
+
+            /*            foreach (DataRow item in dataTable.Rows)
+                        {
+                            darab++;
+                        }*/
+
+            MessageBox.Show($"Legyűjtött rekordok száma: {darab.ToString()} darab", "Eredmény", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (darab != 0)
+            {
+                btnToCsv.Text = $"{btn602Kihagyott.Text} ({darab.ToString()}) darab rekord CSV fájlba írása";
+                btnToCsv.Visible = true;
+                dataGridView2.DataSource = dataTable;
+            };
+
+        }
 
 
         void Task606()
@@ -148,7 +221,7 @@ namespace MSHelpdesk
             }
             if (!AzonKHOK)
             {
-                logBox.Text += "A megadott FH-AzonKH párosítás nem megfelelő!\n" ;
+                logBox.Text += "A megadott FH-AzonKH párosítás nem megfelelő!\n";
                 return;
             }
             ActualScript = @"select distinct nvl(f.fcsmbiz1, p.hivszam), nvl(p.jell_kod, s.tip), s.mmfsz_ikt, p.erv, nvl(d.atadjel, 'NINCS ÁTADVA') as atadjel, d6.*
@@ -181,12 +254,12 @@ namespace MSHelpdesk
             seged = runQuery(ActualScript);
             ScriptToSave += ActualScript + "\n\n";
             dataGridView1.DataSource = seged;
-            string filenev = @"C:\Temp\" + pEP+DateTime.Now.ToString("yyyyMMddHHmmss");
+            string filenev = @"C:\Temp\" + pEP + DateTime.Now.ToString("yyyyMMddHHmmss");
 
             filenev = filenev + ".csv";
 
             WriteToCSV(seged, filenev);
-            logBox.Text += "Az állomány mentve a következő útvonalra: " + filenev+"\n";
+            logBox.Text += "Az állomány mentve a következő útvonalra: " + filenev + "\n";
 
             if (seged.Rows.Count != pTETELSZAM)
             {
@@ -236,7 +309,7 @@ namespace MSHelpdesk
             runCommand(ActualScript);
 
             logBox.Text += "Scriptek mentve a következő útvonalra: " + @"C:\temp\" + pEP + ".sql\n";
-            
+
 
             File.WriteAllText(@"C:\temp\" + pEP + ".sql", ScriptToSave);
         }
@@ -286,5 +359,87 @@ namespace MSHelpdesk
         {
 
         }
+        private void FormUrites()
+        {
+            lblLog.Visible = false;
+            lblLog.Text = "";
+            btnToCsv.Visible = false;
+            dataGridView2.DataSource = null;
+            dataGridView2.Rows.Clear();
+        }
+
+        private void btn602Dupla_Click(object sender, EventArgs e)
+        {
+            //            lblLog.Text = string.Empty;
+            FormUrites();
+            DateTime dateTime = dateTimePicker1.Value;
+
+            if (lblSrv.Text == "Kapcsolódj szerverhez!")
+            {
+                MessageBox.Show("Kapcsolódj szerverhez!", "Figyelem!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show($"A kiválasztott év: {dateTime.Year} hónap: {dateTime.Month}. Folytatod?", "602 Dupla tételek lekérdezése", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Task602Dupla(dateTime);
+                }
+
+            }
+
+
+        }
+
+
+        private void btn602Kihagyott_Click(object sender, EventArgs e)
+        {
+            //            lblLog.Text = string.Empty;
+            FormUrites();
+            DateTime dateTime = dateTimePicker1.Value;
+
+            if (lblSrv.Text == "Kapcsolódj szerverhez!")
+            {
+                MessageBox.Show("Kapcsolódj szerverhez!");
+            }
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show($"A kiválasztott év: {dateTime.Year} hónap: {dateTime.Month}. Folytatod?", "602 Kihagyott tételek lekérdezése", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Task602Kihagyott(dateTime);
+                }
+            }
+        }
+
+        private void btnToCsv_Click(object sender, EventArgs e)
+        {
+            string kiegNev = "";
+            //            MessageBox.Show(btnToCsv.Text.Substring(4, 1));
+            if (btnToCsv.Text.Substring(4, 1) == "d")
+            {
+                kiegNev = "-dupla";
+            }
+            else if ((btnToCsv.Text.Substring(4, 1) == "k"))
+            {
+                kiegNev = "-kihagyott";
+            }
+
+            string filehonap = pHONAP.ToString();
+
+            if (pHONAP < 10)
+            {
+                filehonap = "0" + filehonap;
+            }
+            string filenev = @"C:\Temp\" + pEV.ToString() + filehonap + kiegNev + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            filenev = filenev + ".csv";
+
+            WriteToCSV(dataTable, filenev);
+
+            lblLog.Text = "Az állomány mentve a következő útvonalra: " + filenev;
+            lblLog.Visible = true;
+        }
+
     }
 }

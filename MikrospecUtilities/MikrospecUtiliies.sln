@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "MikrospecUtiliies\HelloWorld.csproj", "{6986FF34-EBBC-4F4A-8476-0ED697FBFFEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSHelpdesk", "MSHelpdesk\MSHelpdesk.csproj", "{B42AEC9E-ABAF-4F39-A033-B943D909891D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KasszaGitRepo", "KasszaGitRepo\KasszaGitRepo.csproj", "{96747435-C870-4B9F-873B-4217CA661DCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KasszaGitRepoUtil", "KasszaGitRepoUtil\KasszaGitRepoUtil.csproj", "{846531A4-1BE3-4248-A5AC-61279E719487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{B42AEC9E-ABAF-4F39-A033-B943D909891D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42AEC9E-ABAF-4F39-A033-B943D909891D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B42AEC9E-ABAF-4F39-A033-B943D909891D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96747435-C870-4B9F-873B-4217CA661DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96747435-C870-4B9F-873B-4217CA661DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96747435-C870-4B9F-873B-4217CA661DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96747435-C870-4B9F-873B-4217CA661DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846531A4-1BE3-4248-A5AC-61279E719487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846531A4-1BE3-4248-A5AC-61279E719487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846531A4-1BE3-4248-A5AC-61279E719487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846531A4-1BE3-4248-A5AC-61279E719487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
